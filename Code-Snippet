@@ -1,1 +1,120 @@
+Inorder Traversal 
 
+Height of Binary Tree
+
+int height(Node root) 
+    {
+         if(root == null) return 0;
+         
+         int leftHeight = height(root.left);
+         int rightHeight = height(root.right);
+         
+         return leftHeight > rightHeight 
+                ? leftHeight + 1
+                : rightHeight + 1;
+         
+    }
+    
+Full binary tree
+    
+boolean isFullTree(Node node) {
+     if(node == null) 
+          return false;
+
+     if(node.left == null && node.right == null)
+          return true;
+
+      if(node.left == null && node.right !=null)
+          return false;
+
+
+      if(node.left != null && node.right ==null)
+          return false;   
+
+      return isFullTree(node.left) && isFullTree(node.right);
+
+  }
+  
+  Symmetric Tree  -  whether the binary tree is a Mirror image of itself or not.
+  
+  public static boolean isMirror(Node node1, Node node2)
+    {
+        boolean isBothNodesAreNotPresent = (node1 == null && node2 == null);
+        
+        if(isBothNodesAreNotPresent)
+                 return true;
+                 
+        boolean isBothNodesArePresent = (node1!=null && node2!=null);
+        //boolean isBothNodeHaveSameData = (node1.data == node2.data);
+        
+        
+        if( isBothNodesArePresent && (node1.data == node2.data))
+            return isMirror(node1.left, node2.right) 
+                    && isMirror(node1.right, node2.left);
+        
+        
+        return false;
+    }
+    
+    Vertical sum - find vertical sum of the nodes that are in same vertical line.
+    public ArrayList <Integer> verticalSum(Node root) {
+        ArrayList <Integer> result = new ArrayList <Integer>();
+        
+        if(root == null) return result;
+        
+        TreeMap<Integer, Integer> hM = new TreeMap<Integer, Integer>();
+        
+        verticalSumUtil(root, 0, hM);
+       
+        for(Map.Entry<Integer, Integer> entry : hM.entrySet()){
+            result.add(entry.getValue());
+        }
+        
+        return result;
+        
+    }
+    
+    public void verticalSumUtil(Node node, int hD, TreeMap<Integer, Integer> hM) {
+        
+        if(node == null) return;
+        
+        //left
+        verticalSumUtil(node.left, hD-1, hM);
+        
+        //sum
+        int prevSum = (hM.get(hD) == null) ? 0 : hM.get(hD) ;
+        hM.put(hD, prevSum + node.data);
+        
+        //right
+        verticalSumUtil(node.right, hD+1, hM);
+    }
+    
+    
+    Check if Tree is Isomorphic - Two trees are called isomorphic if one of them can be obtained from other by a series of flips, i.e. by swapping left and right children of a number of nodes. Any number of nodes at any level can have their children swapped. Two empty trees are isomorphic.
+    
+    boolean isIsomorphic(Node root1, Node root2)  
+    { 
+        if(root1 == null && root2 == null){
+            return true;
+        }
+        
+        if(root1 == null || root2 == null){
+            return false;            
+        }
+        
+        if(root1.data != root2.data){
+            return false;
+        }
+        
+        boolean isLeftEqualsToLeft  = isIsomorphic(root1.left, root2.left);
+        boolean isRightEqualsToRight = isIsomorphic(root1.right, root2.right);
+        
+        boolean isLeftEqualsToRight = isIsomorphic(root1.left, root2.right);
+        boolean isRightEqualsToLeft = isIsomorphic(root1.right, root2.left);
+        
+        return (isLeftEqualsToLeft && isRightEqualsToRight) 
+                || (isLeftEqualsToRight && isRightEqualsToLeft);
+        
+        
+    }
+    
